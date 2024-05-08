@@ -1,6 +1,4 @@
 import tkinter.ttk
-import app
-
 
 from pagini import *
 from tkinter import *
@@ -9,9 +7,7 @@ from customtkinter import *
 from user import user
 
 
-
 def start():
-
     # Main app
     principal = Tk()
     principal.geometry("520x520")
@@ -25,7 +21,7 @@ def start():
 
     # Coloane Treeview
     treeview["columns"] = ("Nume", "Pret")
-    treeview.column("#0", width=20,minwidth=20,stretch=NO)
+    treeview.column("#0", width=20, minwidth=20, stretch=NO)
     treeview.column("Nume", width=370, anchor=W, minwidth=370)
     treeview.column("Pret", anchor=W, width=60, minwidth=60)
 
@@ -33,23 +29,6 @@ def start():
     treeview.heading("#0", text="ID", anchor=W)
     treeview.heading("Nume", text="Nume medicament", anchor=W)
     treeview.heading("Pret", text="Pret", anchor=W)
-
-    # Add Date
-    id = 0
-    drmax = pagina1.listadrmax
-    # for produs in drmax:
-    #     treeview.insert(parent="", text=str(id), index="end", values=produs)
-    #     id += 1
-
-    napofarm = pagina2.listanapofarm
-    # for produs in napofarm:
-    #     treeview.insert(parent="", text=str(id), index="end", values=produs)
-    #     id += 1
-
-    helpnet = pagina3.listahelpnet
-    for produs in helpnet:
-        treeview.insert(parent="", text=str(id), index="end", values=produs)
-        id += 1
 
     # Login TopLevel
     login = Toplevel(principal)
@@ -68,6 +47,7 @@ def start():
     mainframe = CTkFrame(principal, fg_color="#008080")
     loginframe = CTkFrame(login, fg_color="#008080")
     registerframe = CTkFrame(register, fg_color="#008080")
+    buttonframe = CTkFrame(principal,fg_color="#008080")
 
     # Functii:
     def logheazaPersoana():
@@ -78,7 +58,10 @@ def start():
                 login.withdraw()
                 messagebox.showinfo(message="Te-ai logat cu succes")
                 mainframe.destroy()
+                treeview.place(relx=0.05, rely=0.05, relwidth=0.9, relheight=0.7)
                 treeview.pack()
+                buttonframe.pack()
+
             else:
                 messagebox.showwarning(message="Datele pe care le-ai introdus sunt incorecte!")
                 login.deiconify()
@@ -89,7 +72,6 @@ def start():
             messagebox.showwarning(message="Nu exista acest cont!Te rugam sa te inregistrezi.")
             login_buttonmain.destroy()
             login.destroy()
-
 
     def inregistreazaPersoana():
         user.loadPersons()
@@ -104,6 +86,29 @@ def start():
             messagebox.showinfo(message=f"Te-ai inregistrat cu succes! Bine ai venit {username2_entry.get()}")
             mainframe.destroy()
 
+    def comanda_drmax():
+        id = 0
+        drmax = pagina1.listadrmax
+        for produs in drmax:
+            treeview.insert(parent="", text=str(id), index="end", values=produs)
+            id += 1
+
+    def comanda_napofarm():
+        id = 0
+        napofarm = pagina2.listanapofarm
+        for produs in napofarm:
+            treeview.insert(parent="", text=str(id), index="end", values=produs)
+            id += 1
+
+    def comanda_helpnet():
+        id = 0
+        helpnet = pagina3.listahelpnet
+        for produs in helpnet:
+            treeview.insert(parent="", text=str(id), index="end", values=produs)
+            id += 1
+
+    def comanda_clear():
+        treeview.delete(*treeview.get_children())
 
     # Mainframe (login/register)
     mesaj = CTkLabel(mainframe, text="Welcome!", font=("arial", 40))
@@ -142,6 +147,21 @@ def start():
     password2_label.grid(row="2", column="0")
     password2_entry.grid(row="2", column="1")
     login_button2.grid(row="3", column="0", columnspan="2", pady="30")
+
+
+    # Butoane
+
+    clear_button = CTkButton(buttonframe, text="Clear", command=comanda_clear)
+    clear_button.grid(row=0, column=0, padx=10, pady=10)
+
+    button1 = CTkButton(buttonframe, text="DrMax",command=comanda_drmax)
+    button1.grid(row=0, column=1, padx=10, pady=10)
+
+    button2 = CTkButton(buttonframe, text="Helpnet",command=comanda_helpnet)
+    button2.grid(row=0, column=2, padx=10, pady=10)
+
+    button3 = CTkButton(buttonframe, text="Napofarm",command=comanda_napofarm)
+    button3.grid(row=0, column=3, padx=10, pady=10)
 
     mainframe.pack()
     loginframe.pack()
