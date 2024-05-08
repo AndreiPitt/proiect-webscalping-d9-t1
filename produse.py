@@ -2,7 +2,6 @@ from datetime import datetime
 
 now = datetime.now()
 
-
 class produse:
     @classmethod
     def citesteFisierul(cls):
@@ -22,7 +21,7 @@ class produse:
 
     @classmethod
     def scrieinfisier(cls, a: object, b: object, c: object):
-        with open("produse.csv", "a") as f:
+        with open("produse.csv", "a", encoding="utf-8") as f:
             f.write(now.strftime("%d/%m/%Y %H:%M:%S\n"))
 
             for produs in a.listadrmax:
