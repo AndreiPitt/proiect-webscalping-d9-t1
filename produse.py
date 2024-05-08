@@ -1,11 +1,9 @@
 from datetime import datetime
 
-now = datetime.now()
-
 class produse:
     @classmethod
     def citesteFisierul(cls):
-        with open("produse.csv", "r") as f:
+        with open("produse.csv", "r",encoding="UTF-8") as f:
             if len(f.read(1)) == 0:
                 print("Fisier gol")
             else:
@@ -21,25 +19,21 @@ class produse:
 
     @classmethod
     def scrieinfisier(cls, a: object, b: object, c: object):
-        with open("produse.csv", "a", encoding="utf-8") as f:
+        """
+        Aceasta este o metoda de clasa.
+        Functia scrieinfisier adauga in fisierul de tip csv date de pe o anume pagina a fiecarei tip de site.
+        Fiecare site (drmax,napofarm,helpnet) au structura diferita.
+        Se pot introduce orice pagina web de pe site-urile respective cu conditia de pasa functiei cate o pagina de pe
+        fiecare site pentru comparatie. (Cerinta proiect)
+        """
+        now = datetime.now()
+        with open("produse.csv", "a", encoding="UTF-8") as f:
             f.write(now.strftime("%d/%m/%Y %H:%M:%S\n"))
-
             for produs in a.listadrmax:
-                """
-                Caracterul μ provoaca eroare la adaugarea produsului in fisier
-                """
-                produs = list(produs)
-                produs[0] = produs[0].replace("μ", "u")
                 f.write(f"({produs[0]},{produs[1]})\n")
 
             for produs in b.listanapofarm:
-                if produs[0].endswith('\u03bc'):
-                    temp = produs[0].find('\u03bc')
-                    produs[0] = produs[0][0:temp]
                 f.write(f"({produs[0]},{produs[1]})\n")
 
             for produs in c.listahelpnet:
-                if produs[0].endswith('\u03bc'):
-                    temp = produs[0].find('\u03bc')
-                    produs[0] = produs[0][0:temp]
                 f.write(f"({produs[0]},{produs[1]})\n")
