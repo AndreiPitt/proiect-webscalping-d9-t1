@@ -8,17 +8,38 @@ from user import user
 
 
 def start():
-    # Main app
+    # Start app
     principal = Tk()
-    principal.geometry("520x520")
+    principal.geometry("650x440")
     principal.title("Aplicatie")
     principal.configure(bg="#008080")
     icon = PhotoImage(file="icon.png")
     principal.iconphoto(True, icon)
+    principal.resizable(height=False, width=False)
 
+    # Login TopLevel
+    login = Toplevel(principal)
+    login.withdraw()
+    login.geometry("320x320")
+    login.title("Login")
+    login.configure(bg="#008080")
+    login.resizable(height=False, width=False)
+
+    # Register TopLevel
+    register = Toplevel(principal)
+    register.withdraw()
+    register.geometry("320x320")
+    register.title("Register")
+    register.configure(bg="#008080")
+    register.resizable(height=False, width=False)
+
+    startframe = CTkFrame(principal, fg_color="#008B8B")
+    loginframe = CTkFrame(login, fg_color="#008080")
+    registerframe = CTkFrame(register, fg_color="#008080")
+    buttonframe = CTkFrame(principal, fg_color="#008080")
+    searchframe = CTkFrame(principal, fg_color="#008080")
     # Treeview
-    treeview = tkinter.ttk.Treeview(principal)
-
+    treeview = tkinter.ttk.Treeview(principal, height=15)
     # Coloane Treeview
     treeview["columns"] = ("Nume", "Pret")
     treeview.column("#0", width=20, minwidth=20, stretch=NO)
@@ -30,25 +51,6 @@ def start():
     treeview.heading("Nume", text="Nume medicament", anchor=W)
     treeview.heading("Pret", text="Pret", anchor=W)
 
-    # Login TopLevel
-    login = Toplevel(principal)
-    login.withdraw()
-    login.geometry("320x320")
-    login.title("Login")
-    login.configure(bg="#008080")
-
-    # Register TopLevel
-    register = Toplevel(principal)
-    register.withdraw()
-    register.geometry("320x320")
-    register.title("Register")
-    register.configure(bg="#008080")
-
-    mainframe = CTkFrame(principal, fg_color="#008080")
-    loginframe = CTkFrame(login, fg_color="#008080")
-    registerframe = CTkFrame(register, fg_color="#008080")
-    buttonframe = CTkFrame(principal,fg_color="#008080")
-
     # Functii:
     def logheazaPersoana():
         user.loadPersons()
@@ -57,10 +59,10 @@ def start():
             if [username_entry.get(), password_entry.get()] in utilizator:
                 login.withdraw()
                 messagebox.showinfo(message="Te-ai logat cu succes")
-                mainframe.destroy()
-                treeview.place(relx=0.05, rely=0.05, relwidth=0.9, relheight=0.7)
-                treeview.pack()
-                buttonframe.pack()
+                startframe.destroy()
+                treeview.grid(row=0, column=1, padx=20, pady=20)
+                buttonframe.grid(row=0, column=0)
+                searchframe.grid(row=1, column=0, columnspan=5, sticky="ew")
 
             else:
                 messagebox.showwarning(message="Datele pe care le-ai introdus sunt incorecte!")
@@ -84,7 +86,7 @@ def start():
             user.save(cont_nou)
             register.withdraw()
             messagebox.showinfo(message=f"Te-ai inregistrat cu succes! Bine ai venit {username2_entry.get()}")
-            mainframe.destroy()
+            startframe.destroy()
 
     def comanda_drmax():
         id = 0
@@ -110,10 +112,10 @@ def start():
     def comanda_clear():
         treeview.delete(*treeview.get_children())
 
-    # Mainframe (login/register)
-    mesaj = CTkLabel(mainframe, text="Welcome!", font=("arial", 40))
-    login_buttonmain = CTkButton(mainframe, text="Login", fg_color="#B22222", command=login.deiconify)
-    register_buttonmain = CTkButton(mainframe, text="Register", fg_color="#B22222", command=register.deiconify)
+    # Startframe (login/register)
+    mesaj = CTkLabel(startframe, text="Welcome!", font=("arial", 40))
+    login_buttonmain = CTkButton(startframe, text="Login", fg_color="#B22222", command=login.deiconify)
+    register_buttonmain = CTkButton(startframe, text="Register", fg_color="#B22222", command=register.deiconify)
     mesaj.grid(row=1, column=0, pady=50)
     login_buttonmain.grid(row=2, column=0, pady=20)
     register_buttonmain.grid(row=3, column=0, pady=20)
@@ -148,22 +150,34 @@ def start():
     password2_entry.grid(row="2", column="1")
     login_button2.grid(row="3", column="0", columnspan="2", pady="30")
 
+    # Butoaneframe
 
-    # Butoane
-
-    clear_button = CTkButton(buttonframe, text="Clear", command=comanda_clear)
+    clear_button = CTkButton(buttonframe, text="Clear", command=comanda_clear, fg_color="red")
     clear_button.grid(row=0, column=0, padx=10, pady=10)
 
-    button1 = CTkButton(buttonframe, text="DrMax",command=comanda_drmax)
-    button1.grid(row=0, column=1, padx=10, pady=10)
+    button1 = CTkButton(buttonframe, text="DrMax", command=comanda_drmax, fg_color="red")
+    button1.grid(row=1, column=0, padx=10, pady=10)
 
-    button2 = CTkButton(buttonframe, text="Helpnet",command=comanda_helpnet)
-    button2.grid(row=0, column=2, padx=10, pady=10)
+    button2 = CTkButton(buttonframe, text="Helpnet", command=comanda_helpnet, fg_color="red")
+    button2.grid(row=2, column=0, padx=10, pady=10)
 
-    button3 = CTkButton(buttonframe, text="Napofarm",command=comanda_napofarm)
-    button3.grid(row=0, column=3, padx=10, pady=10)
+    button3 = CTkButton(buttonframe, text="Napofarm", command=comanda_napofarm, fg_color="red")
+    button3.grid(row=3, column=0, padx=10, pady=10)
 
-    mainframe.pack()
+    button4 = CTkButton(buttonframe, text="Save", fg_color="red")
+    button4.grid(row=4, column=0, padx=10, pady=10)
+
+    # entryframe
+    introducere = CTkLabel(searchframe, text="Introduceti link ul farmaciei: ")
+    introducere.grid(row=0, column=0,padx=12, sticky="w")
+    link = CTkEntry(searchframe, fg_color="#B22222")
+    link.grid(row=1, column=0, padx=10, pady=(0, 10), sticky="ew")
+    searchframe.columnconfigure(0, weight=6)
+    buttonsearch = CTkButton(searchframe, text="OK", fg_color="black")
+    buttonsearch.grid(row=1, column=1, padx=(0, 10), pady=(0, 10), sticky="e")
+    searchframe.columnconfigure(1, weight=1)
+
+    startframe.pack(anchor="center", pady=50)
     loginframe.pack()
     registerframe.pack()
     principal.mainloop()

@@ -1,7 +1,4 @@
-import schedule
-
 from web import web
-from produse import produse
 
 """
 Creare obiect de tip web care primeste ca parametrul url.
