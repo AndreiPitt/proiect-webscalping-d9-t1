@@ -1,10 +1,11 @@
 import tkinter.ttk
-
-from pagini import *
 from tkinter import *
 from tkinter import messagebox
 from customtkinter import *
+
+from app import pagina1, pagina2, pagina3
 from user import user
+from web import web
 
 
 def start():
@@ -33,6 +34,7 @@ def start():
     register.configure(bg="#008080")
     register.resizable(height=False, width=False)
 
+    # Frame uri
     startframe = CTkFrame(principal, fg_color="#008B8B")
     loginframe = CTkFrame(login, fg_color="#008080")
     registerframe = CTkFrame(register, fg_color="#008080")
@@ -52,6 +54,96 @@ def start():
     treeview.heading("Pret", text="Pret", anchor=W)
 
     # Functii:
+
+    def comanda_drmax(p: object):
+        count = 0
+        drmax = p.listadrmax
+        for produs in drmax:
+            treeview.insert(parent="", text=str(count), index="end", values=produs)
+            count += 1
+
+    def comanda_napofarm(p: object):
+        count = 0
+        napofarm = p.listanapofarm
+        for produs in napofarm:
+            treeview.insert(parent="", text=str(count), index="end", values=produs)
+            count += 1
+
+    def comanda_helpnet(p: object):
+        count = 0
+        helpnet = p.listahelpnet
+        for produs in helpnet:
+            treeview.insert(parent="", text=str(count), index="end", values=produs)
+            count += 1
+
+    def comanda_clear():
+        treeview.delete(*treeview.get_children())
+
+    def verificaLink():
+        """
+        Functia verifica daca linkurile sunt valide.
+        a este parametru temporar care stocheaza caracterele introduse in entry pentru a fi procesate.
+        t este un tuplu care contine url ul site ului respectiv si flag-ul: t[0] = url ; t[1] = flag
+        In caz ca url ul este invalid se returneaza None
+        """
+        a = link.get()
+        if a.startswith("https://www.drmax.ro/"):
+            flag = 1
+            t = (a, flag)
+            link.delete(0, END)
+            return t
+        elif a.startswith("https://www.farmaciilenapofarm.ro/"):
+            flag = 2
+            t = (a, flag)
+            link.delete(0, END)
+            return t
+        elif a.startswith("https://www.helpnet.ro/"):
+            flag = 3
+            t = (a, flag)
+            link.delete(0, END)
+            return t
+        else:
+            print("Nu ai introdus un link valid")
+            link.delete(0, END)
+            return None
+
+    def creazaLink():
+        """"
+        Apeleaza functia verificaLink() si salveaza in variabila a tuplul returnat de functie.
+        Se face verificarea elementului secundar din tuplu care indica ce tip de pagina este apoi se creaza pagina.
+        Dupa verificare se returneaza obiectul creat.
+        Functia creazaLink returneaza obiecte de tip pagini sau None daca flagul nu corespunde.
+
+        """
+        a = verificaLink()
+        if a[1] == 1:
+            pagina = web(a[0])
+            pagina.creazaPagina(a[1])
+            return pagina
+        elif a[1] == 2:
+            pagina = web(a[0])
+            pagina.creazaPagina(a[1])
+            return pagina
+        elif a[1] == 3:
+            pagina = web(a[0])
+            pagina.creazaPagina(a[1])
+            return pagina
+        else:
+            return None
+
+    def afiseazaLink():
+        """"
+        Se apeleaza functia creazaLink
+        """
+        pagina = creazaLink()
+        if pagina is not None:
+            if pagina.flag == 1:
+                comanda_drmax(pagina)
+            elif pagina.flag == 2:
+                comanda_napofarm(pagina)
+            elif pagina.flag == 3:
+                comanda_helpnet(pagina)
+
     def logheazaPersoana():
         user.loadPersons()
         utilizator = user.readFormFile()
@@ -87,30 +179,6 @@ def start():
             register.withdraw()
             messagebox.showinfo(message=f"Te-ai inregistrat cu succes! Bine ai venit {username2_entry.get()}")
             startframe.destroy()
-
-    def comanda_drmax():
-        id = 0
-        drmax = pagina1.listadrmax
-        for produs in drmax:
-            treeview.insert(parent="", text=str(id), index="end", values=produs)
-            id += 1
-
-    def comanda_napofarm():
-        id = 0
-        napofarm = pagina2.listanapofarm
-        for produs in napofarm:
-            treeview.insert(parent="", text=str(id), index="end", values=produs)
-            id += 1
-
-    def comanda_helpnet():
-        id = 0
-        helpnet = pagina3.listahelpnet
-        for produs in helpnet:
-            treeview.insert(parent="", text=str(id), index="end", values=produs)
-            id += 1
-
-    def comanda_clear():
-        treeview.delete(*treeview.get_children())
 
     # Startframe (login/register)
     mesaj = CTkLabel(startframe, text="Welcome!", font=("arial", 40))
@@ -155,13 +223,13 @@ def start():
     clear_button = CTkButton(buttonframe, text="Clear", command=comanda_clear, fg_color="red")
     clear_button.grid(row=0, column=0, padx=10, pady=10)
 
-    button1 = CTkButton(buttonframe, text="DrMax", command=comanda_drmax, fg_color="red")
+    button1 = CTkButton(buttonframe, text="DrMax", command=lambda: comanda_drmax(pagina1) , fg_color="red")
     button1.grid(row=1, column=0, padx=10, pady=10)
 
-    button2 = CTkButton(buttonframe, text="Helpnet", command=comanda_helpnet, fg_color="red")
+    button2 = CTkButton(buttonframe, text="Helpnet", command=lambda: comanda_helpnet(pagina3), fg_color="red")
     button2.grid(row=2, column=0, padx=10, pady=10)
 
-    button3 = CTkButton(buttonframe, text="Napofarm", command=comanda_napofarm, fg_color="red")
+    button3 = CTkButton(buttonframe, text="Napofarm", command=lambda: comanda_napofarm(pagina2), fg_color="red")
     button3.grid(row=3, column=0, padx=10, pady=10)
 
     button4 = CTkButton(buttonframe, text="Save", fg_color="red")
@@ -169,11 +237,11 @@ def start():
 
     # entryframe
     introducere = CTkLabel(searchframe, text="Introduceti link ul farmaciei: ")
-    introducere.grid(row=0, column=0,padx=12, sticky="w")
+    introducere.grid(row=0, column=0, padx=12, sticky="w")
     link = CTkEntry(searchframe, fg_color="#B22222")
     link.grid(row=1, column=0, padx=10, pady=(0, 10), sticky="ew")
     searchframe.columnconfigure(0, weight=6)
-    buttonsearch = CTkButton(searchframe, text="OK", fg_color="black")
+    buttonsearch = CTkButton(searchframe, text="OK", fg_color="black", command=afiseazaLink)
     buttonsearch.grid(row=1, column=1, padx=(0, 10), pady=(0, 10), sticky="e")
     searchframe.columnconfigure(1, weight=1)
 

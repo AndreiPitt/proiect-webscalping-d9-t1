@@ -1,9 +1,10 @@
 from datetime import datetime
 
+
 class produse:
     @classmethod
     def citesteFisierul(cls):
-        with open("produse.csv", "r",encoding="UTF-8") as f:
+        with open("produse.csv", "r", encoding="UTF-8") as f:
             if len(f.read(1)) == 0:
                 print("Fisier gol")
             else:
