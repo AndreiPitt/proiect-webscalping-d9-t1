@@ -1,3 +1,6 @@
+import csv
+
+
 class user:
     persoaneCreate = []
     counter = 0
@@ -18,34 +21,27 @@ class user:
 
     def writeToFile(self, nume):
         with open(nume, 'a') as f:
-            f.write(f"{self.nume};{self.parola}\n")
+            scriitor = csv.writer(f)
+            scriitor.writerow([self.nume, self.parola])
+            # f.write(f"{self.nume};{self.parola}\n")
 
     @classmethod
     def readFormFile(cls):
         login = []
-        f = open("persoane.csv", "r")
-        content_1 = f.read().split("\n")
-
-        for line in content_1:
-            detalii = line.split(";")
-            login.append(detalii)
-        # del login[len(login) - 1]
-        # for i in range(0, len(login)):
-        #     del login[i][1]
-
-        # Pentru verificare
-        # print(login)
-        return login
+        with open("persoane.csv", "r") as f:
+            cititor = csv.reader(f)
+            for persoana in cititor:
+                login.append(persoana)
+            return login
 
     @classmethod
     def loadPersons(cls):
         with open("persoane.csv", 'r') as f:
-            content = [line.strip("\n") for line in f.readlines()]
-            if content:
-                for person in content:
-                    details = person.split(";")
-                    if not cls.checkPersonByName(details[0]):
-                        tempPerson = user(details[0], details[1])
+            cititor = csv.reader(f)
+            if cititor:
+                for person in cititor:
+                    if not cls.checkPersonByName(person[0]):
+                        tempPerson = user(person[0], person[1])
                         cls.persoaneCreate.append(tempPerson)
                         user.counter += 1
 
