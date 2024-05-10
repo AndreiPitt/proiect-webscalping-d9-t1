@@ -55,26 +55,40 @@ def start():
 
     # Functii:
 
-    def comanda_drmax(p: object):
-        count = 0
-        drmax = p.listadrmax
-        for produs in drmax:
-            treeview.insert(parent="", text=str(count), index="end", values=produs)
-            count += 1
+    def comanda_pagina(pagina: object):
+        """" Functia comanda_pagina primeste ca parametru un obiect de tip Web.Flagul paginii poate fi 1,
+        2 sau 3. Se verifica daca cheia apartine dictionarului cu optiuni iar daca aceasta apartine se creaza o
+        variabila "tip" care tine loc de metodele obiectului de tip Web (.drmax sau .napofarm sau .helpnet)
+        """
+        optiuni = {1: "listadrmax", 2: "listanapofarm", 3: "listahelpnet"}
+        tip = optiuni.get(pagina.flag)
+        if pagina.flag in optiuni:
+            count = 0
+            produse = getattr(pagina, tip)
+            for produs in produse:
+                treeview.insert(parent="", text=str(count), index="end", values=produs)
+                count += 1
 
-    def comanda_napofarm(p: object):
-        count = 0
-        napofarm = p.listanapofarm
-        for produs in napofarm:
-            treeview.insert(parent="", text=str(count), index="end", values=produs)
-            count += 1
-
-    def comanda_helpnet(p: object):
-        count = 0
-        helpnet = p.listahelpnet
-        for produs in helpnet:
-            treeview.insert(parent="", text=str(count), index="end", values=produs)
-            count += 1
+    # def comanda_drmax(p: object):
+    #     count = 0
+    #     drmax = p.listadrmax
+    #     for produs in drmax:
+    #         treeview.insert(parent="", text=str(count), index="end", values=produs)
+    #         count += 1
+    #
+    # def comanda_napofarm(p: object):
+    #     count = 0
+    #     napofarm = p.listanapofarm
+    #     for produs in napofarm:
+    #         treeview.insert(parent="", text=str(count), index="end", values=produs)
+    #         count += 1
+    #
+    # def comanda_helpnet(p: object):
+    #     count = 0
+    #     helpnet = p.listahelpnet
+    #     for produs in helpnet:
+    #         treeview.insert(parent="", text=str(count), index="end", values=produs)
+    #         count += 1
 
     def comanda_clear():
         treeview.delete(*treeview.get_children())
@@ -105,14 +119,16 @@ def start():
         else:
             print("Nu ai introdus un link valid")
             link.delete(0, END)
-            return None
+            messagebox.showwarning(message="ERROR: Link invalid!")
+            error = (a, -1)
+            return error
 
     def creazaLink():
         """"
         Apeleaza functia verificaLink() si salveaza in variabila a tuplul returnat de functie.
         Se face verificarea elementului secundar din tuplu care indica ce tip de pagina este apoi se creaza pagina.
         Dupa verificare se returneaza obiectul creat.
-        Functia creazaLink returneaza obiecte de tip pagini sau None daca flagul nu corespunde.
+        Functia creazaLink returneaza obiecte de tip Web sau None daca flagul nu corespunde.
 
         """
         a = verificaLink()
@@ -133,16 +149,11 @@ def start():
 
     def afiseazaLink():
         """"
-        Se apeleaza functia creazaLink
+        Se apeleaza functia creazaLink pentru a crea un obiect de tip Web
         """
         pagina = creazaLink()
         if pagina is not None:
-            if pagina.flag == 1:
-                comanda_drmax(pagina)
-            elif pagina.flag == 2:
-                comanda_napofarm(pagina)
-            elif pagina.flag == 3:
-                comanda_helpnet(pagina)
+            comanda_pagina(pagina)
 
     def logheazaPersoana():
         user.loadPersons()
@@ -223,13 +234,13 @@ def start():
     clear_button = CTkButton(buttonframe, text="Clear", command=comanda_clear, fg_color="red")
     clear_button.grid(row=0, column=0, padx=10, pady=10)
 
-    button1 = CTkButton(buttonframe, text="DrMax", command=lambda: comanda_drmax(pagina1) , fg_color="red")
+    button1 = CTkButton(buttonframe, text="DrMax", command=lambda: comanda_pagina(pagina1), fg_color="red")
     button1.grid(row=1, column=0, padx=10, pady=10)
 
-    button2 = CTkButton(buttonframe, text="Helpnet", command=lambda: comanda_helpnet(pagina3), fg_color="red")
+    button2 = CTkButton(buttonframe, text="Helpnet", command=lambda: comanda_pagina(pagina3), fg_color="red")
     button2.grid(row=2, column=0, padx=10, pady=10)
 
-    button3 = CTkButton(buttonframe, text="Napofarm", command=lambda: comanda_napofarm(pagina2), fg_color="red")
+    button3 = CTkButton(buttonframe, text="Napofarm", command=lambda: comanda_pagina(pagina2), fg_color="red")
     button3.grid(row=3, column=0, padx=10, pady=10)
 
     button4 = CTkButton(buttonframe, text="Save", fg_color="red")

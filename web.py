@@ -56,6 +56,3 @@ class web:
         elif self.flag == 3:
             for pereche in self.listahelpnet:
                 print(pereche)
-
-
-
