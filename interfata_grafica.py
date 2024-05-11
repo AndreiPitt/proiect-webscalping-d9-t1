@@ -64,33 +64,15 @@ def start():
         tip = optiuni.get(pagina.flag)
         if pagina.flag in optiuni:
             count = 0
-            produse = getattr(pagina, tip)
-            for produs in produse:
+            elemente = getattr(pagina, tip)
+            for produs in elemente:
                 treeview.insert(parent="", text=str(count), index="end", values=produs)
                 count += 1
 
-    # def comanda_drmax(p: object):
-    #     count = 0
-    #     drmax = p.listadrmax
-    #     for produs in drmax:
-    #         treeview.insert(parent="", text=str(count), index="end", values=produs)
-    #         count += 1
-    #
-    # def comanda_napofarm(p: object):
-    #     count = 0
-    #     napofarm = p.listanapofarm
-    #     for produs in napofarm:
-    #         treeview.insert(parent="", text=str(count), index="end", values=produs)
-    #         count += 1
-    #
-    # def comanda_helpnet(p: object):
-    #     count = 0
-    #     helpnet = p.listahelpnet
-    #     for produs in helpnet:
-    #         treeview.insert(parent="", text=str(count), index="end", values=produs)
-    #         count += 1
-
     def comanda_clear():
+        """
+        Functia goleste continutul treeview-ului.
+        """
         treeview.delete(*treeview.get_children())
 
     def verificaLink():
@@ -154,6 +136,15 @@ def start():
         pagina = creazaLink()
         if pagina is not None:
             comanda_pagina(pagina)
+        return pagina
+
+    def salveazaPagina():
+        with open("produse.csv", "a", encoding="UTF-8") as f:
+            elemente = treeview.get_children()
+            for element in elemente:
+                produs = treeview.item(element, "values")
+                f.write(f"{produs}\n")
+            print("Produsele au fost adaugate in fisier.")
 
     def logheazaPersoana():
         user.loadPersons()
@@ -243,7 +234,7 @@ def start():
     button3 = CTkButton(buttonframe, text="Napofarm", command=lambda: comanda_pagina(pagina2), fg_color="red")
     button3.grid(row=3, column=0, padx=10, pady=10)
 
-    button4 = CTkButton(buttonframe, text="Save", fg_color="red")
+    button4 = CTkButton(buttonframe, text="Save", fg_color="red", command=salveazaPagina)
     button4.grid(row=4, column=0, padx=10, pady=10)
 
     # entryframe
