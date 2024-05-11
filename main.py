@@ -1,7 +1,6 @@
 import interfata_grafica
 import app
 import threading
-import user
 
 if __name__ == "__main__":
     fir1 = threading.Thread(target=interfata_grafica.start)

@@ -181,6 +181,9 @@ def start():
             register.withdraw()
             messagebox.showinfo(message=f"Te-ai inregistrat cu succes! Bine ai venit {username2_entry.get()}")
             startframe.destroy()
+            treeview.grid(row=0, column=1, padx=20, pady=20)
+            buttonframe.grid(row=0, column=0)
+            searchframe.grid(row=1, column=0, columnspan=5, sticky="ew")
 
     # Startframe (login/register)
     mesaj = CTkLabel(startframe, text="Welcome!", font=("arial", 40))
