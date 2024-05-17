@@ -13,7 +13,7 @@ def start():
     principal = Tk()
     principal.geometry("650x440")
     principal.title("Aplicatie")
-    principal.configure(bg="#008080")
+    principal.configure(bg="#ffffff")
     icon = PhotoImage(file="icon.png")
     principal.iconphoto(True, icon)
     principal.resizable(height=False, width=False)
@@ -23,7 +23,7 @@ def start():
     login.withdraw()
     login.geometry("320x320")
     login.title("Login")
-    login.configure(bg="#008080")
+    login.configure(bg="#ffffff")
     login.resizable(height=False, width=False)
 
     # Register TopLevel
@@ -31,15 +31,15 @@ def start():
     register.withdraw()
     register.geometry("320x320")
     register.title("Register")
-    register.configure(bg="#008080")
+    register.configure(bg="#ffffff")
     register.resizable(height=False, width=False)
 
     # Frame uri
-    startframe = CTkFrame(principal, fg_color="#008B8B")
-    loginframe = CTkFrame(login, fg_color="#008080")
-    registerframe = CTkFrame(register, fg_color="#008080")
-    buttonframe = CTkFrame(principal, fg_color="#008080")
-    searchframe = CTkFrame(principal, fg_color="#008080")
+    startframe = CTkFrame(principal, fg_color="#ffffff")
+    loginframe = CTkFrame(login, fg_color="#ffffff")
+    registerframe = CTkFrame(register, fg_color="#ffffff")
+    buttonframe = CTkFrame(principal, fg_color="#ffffff")
+    searchframe = CTkFrame(principal, fg_color="#ffffff")
     # Treeview
     treeview = tkinter.ttk.Treeview(principal, height=15)
     # Coloane Treeview
@@ -186,20 +186,20 @@ def start():
             searchframe.grid(row=1, column=0, columnspan=5, sticky="ew")
 
     # Startframe (login/register)
-    mesaj = CTkLabel(startframe, text="Welcome!", font=("arial", 40))
-    login_buttonmain = CTkButton(startframe, text="Login", fg_color="#B22222", command=login.deiconify)
-    register_buttonmain = CTkButton(startframe, text="Register", fg_color="#B22222", command=register.deiconify)
+    mesaj = CTkLabel(startframe, text="Welcome!", font=("arial", 40),text_color="#007306")
+    login_buttonmain = CTkButton(startframe, text="Login", fg_color="#007306", command=login.deiconify)
+    register_buttonmain = CTkButton(startframe, text="Register", fg_color="#007306", command=register.deiconify)
     mesaj.grid(row=1, column=0, pady=50)
     login_buttonmain.grid(row=2, column=0, pady=20)
     register_buttonmain.grid(row=3, column=0, pady=20)
 
     # Loginframe:
-    label1 = CTkLabel(loginframe, text="Login", font=("arial", 40))
-    username_label = CTkLabel(loginframe, text="Username", font=("arial", 18))
-    username_entry = CTkEntry(loginframe, fg_color="#B22222")
-    password_label = CTkLabel(loginframe, text="Password", font=("arial", 18))
-    password_entry = CTkEntry(loginframe, show="*", fg_color="#B22222")
-    login_button = CTkButton(loginframe, text="Login", fg_color="#B22222", command=logheazaPersoana)
+    label1 = CTkLabel(loginframe, text="Login", font=("arial", 40), text_color="#007306")
+    username_label = CTkLabel(loginframe, text="Login", font=("arial", 18),text_color="#007306")
+    username_entry = CTkEntry(loginframe, fg_color="#007306")
+    password_label = CTkLabel(loginframe, text="Password", font=("arial", 18),text_color="#007306")
+    password_entry = CTkEntry(loginframe, show="*", fg_color="#007306")
+    login_button = CTkButton(loginframe, text="Login", fg_color="#007306", command=logheazaPersoana)
 
     label1.grid(row="0", column="0", columnspan="2", pady="40")
     username_label.grid(row="1", column="0")
@@ -209,12 +209,12 @@ def start():
     login_button.grid(row="3", column="0", columnspan="2", pady="30")
 
     # Registerframe:
-    label2 = CTkLabel(registerframe, text="Register", font=("arial", 40))
-    username2_label = CTkLabel(registerframe, text="Username", font=("arial", 18))
-    username2_entry = CTkEntry(registerframe, fg_color="#B22222")
-    password2_label = CTkLabel(registerframe, text="Password", font=("arial", 18))
-    password2_entry = CTkEntry(registerframe, show="*", fg_color="#B22222")
-    login_button2 = CTkButton(registerframe, text="Register", fg_color="#B22222", command=inregistreazaPersoana)
+    label2 = CTkLabel(registerframe, text="Register", font=("arial", 40), text_color="#007306")
+    username2_label = CTkLabel(registerframe, text="Username", font=("arial", 18),text_color="#007306")
+    username2_entry = CTkEntry(registerframe, fg_color="#007306")
+    password2_label = CTkLabel(registerframe, text="Password", font=("arial", 18),text_color="#007306")
+    password2_entry = CTkEntry(registerframe, show="*", fg_color="#007306")
+    login_button2 = CTkButton(registerframe, text="Register", fg_color="#007306", command=inregistreazaPersoana)
 
     label2.grid(row="0", column="0", columnspan="2", pady="40")
     username2_label.grid(row="1", column="0")
@@ -225,25 +225,25 @@ def start():
 
     # Butoaneframe
 
-    clear_button = CTkButton(buttonframe, text="Clear", command=comanda_clear, fg_color="red")
+    clear_button = CTkButton(buttonframe, text="Clear", command=comanda_clear, fg_color="#007306")
     clear_button.grid(row=0, column=0, padx=10, pady=10)
 
-    button1 = CTkButton(buttonframe, text="DrMax", command=lambda: comanda_pagina(pagina1), fg_color="red")
+    button1 = CTkButton(buttonframe, text="DrMax", command=lambda: comanda_pagina(pagina1), fg_color="#007306")
     button1.grid(row=1, column=0, padx=10, pady=10)
 
-    button2 = CTkButton(buttonframe, text="Helpnet", command=lambda: comanda_pagina(pagina3), fg_color="red")
+    button2 = CTkButton(buttonframe, text="Helpnet", command=lambda: comanda_pagina(pagina3), fg_color="#007306")
     button2.grid(row=2, column=0, padx=10, pady=10)
 
-    button3 = CTkButton(buttonframe, text="Napofarm", command=lambda: comanda_pagina(pagina2), fg_color="red")
+    button3 = CTkButton(buttonframe, text="Napofarm", command=lambda: comanda_pagina(pagina2), fg_color="#007306")
     button3.grid(row=3, column=0, padx=10, pady=10)
 
-    button4 = CTkButton(buttonframe, text="Save", fg_color="red", command=salveazaPagina)
+    button4 = CTkButton(buttonframe, text="Save", fg_color="#007306", command=salveazaPagina)
     button4.grid(row=4, column=0, padx=10, pady=10)
 
     # entryframe
-    introducere = CTkLabel(searchframe, text="Introduceti link ul farmaciei: ")
+    introducere = CTkLabel(searchframe, text="Introduceti link ul farmaciei: ",text_color="#007306")
     introducere.grid(row=0, column=0, padx=12, sticky="w")
-    link = CTkEntry(searchframe, fg_color="#B22222")
+    link = CTkEntry(searchframe, fg_color="#007306")
     link.grid(row=1, column=0, padx=10, pady=(0, 10), sticky="ew")
     searchframe.columnconfigure(0, weight=6)
     buttonsearch = CTkButton(searchframe, text="OK", fg_color="black", command=afiseazaLink)
